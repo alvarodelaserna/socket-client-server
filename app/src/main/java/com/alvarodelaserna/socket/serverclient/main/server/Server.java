@@ -29,7 +29,7 @@ public class Server {
 	private static final int socketServerPORT = 8080;
 	private ServerFragment.Listener listener;
 	
-	public Server(Context context, ServerFragment.Listener viewListener) {
+	Server(Context context, ServerFragment.Listener viewListener) {
 		this.context = context;
 		activity = (MainActivity) context;
 		listener = viewListener;
@@ -93,38 +93,38 @@ public class Server {
 				message += "Request: " + to.value + "\n";
 				switch (to.value) {
 					case Request.TURN_ON_NETWORK:
-						turnOnNetwork(socket);
+						setRegisterOn(socket);
 						break;
 					case Request.TURN_OFF_NETWORK:
-						turnOffNetwork(socket);
+						setRegisterOff(socket);
 						break;
 					default:
-						getRadioInfoAndSendToClient(socket);
+						getRadio(socket);
 						break;
 				}
 			}
 		}
 		
-		private void turnOnNetwork(Socket socket) {
+		private void setRegisterOn(Socket socket) {
 			if (listener != null) {
-				listener.onTurnOnNetwork(socket);
+				listener.setRegisterOn(socket);
 			}
 		}
 		
-		private void turnOffNetwork(Socket socket) {
+		private void setRegisterOff(Socket socket) {
 			if (listener != null) {
-				listener.onTurnOffNetwork(socket);
+				listener.setRegisterOff(socket);
 			}
 		}
 		
-		private void getRadioInfoAndSendToClient(Socket socket) {
+		private void getRadio(Socket socket) {
 			GetRadioThread getRadioThread = new GetRadioThread(socket, count);
 			getRadioThread.run();
 		}
 		
 	}
 	
-	public void sendResponse(Socket socket, String result) {
+	void sendResponse(Socket socket, String result) {
 		SendResultThread sendResultThread = new SendResultThread(socket, result);
 		sendResultThread.run();
 	}

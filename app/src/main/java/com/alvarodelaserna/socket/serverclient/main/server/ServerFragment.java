@@ -44,12 +44,12 @@ public class ServerFragment extends BaseFragment<ServerView, BaseInteractor> {
 			}
 			
 			@Override
-			public void onTurnOffNetwork(Socket socket) {
+			public void setRegisterOff(Socket socket) {
 				switchNetworkState(socket, false);
 			}
 			
 			@Override
-			public void onTurnOnNetwork(Socket socket) {
+			public void setRegisterOn(Socket socket) {
 				switchNetworkState(socket, true);
 			}
 		});
@@ -83,8 +83,8 @@ public class ServerFragment extends BaseFragment<ServerView, BaseInteractor> {
 		
 		void onMessageUpdate(String message);
 		
-		void onTurnOffNetwork(Socket socket);
+		void setRegisterOff(Socket socket);
 		
-		void onTurnOnNetwork(Socket socket);
+		void setRegisterOn(Socket socket);
 	}
 }
