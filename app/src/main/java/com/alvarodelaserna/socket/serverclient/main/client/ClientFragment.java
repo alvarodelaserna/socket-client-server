@@ -40,6 +40,18 @@ public class ClientFragment extends BaseFragment<ClientView, BaseInteractor> {
 					fragmentView.updateMessageReceived(response);
 				}
 			}
+			
+			@Override
+			public void turnOffNetwork(String ipAddress, String port) {
+				client = new Client(ipAddress.trim(), Integer.parseInt(port.trim()), this);
+				client.execute(Request.TURN_OFF_NETWORK);
+			}
+			
+			@Override
+			public void turnOnNetwork(String ipAddress, String port) {
+				client = new Client(ipAddress.trim(), Integer.parseInt(port.trim()), this);
+				client.execute(Request.TURN_ON_NETWORK);
+			}
 		});
 	}
 	

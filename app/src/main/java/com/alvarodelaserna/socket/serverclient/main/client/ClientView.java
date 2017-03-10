@@ -34,8 +34,8 @@ public class ClientView extends BaseFragmentView {
 		mainView = view;
 		Toolbar toolbar = (Toolbar) view.findViewById(R.id.client_toolbar);
 		viewContextInject(ViewNavigator.class).setUpNavigation(toolbar);
-		Button connectButton = (Button) view.findViewById(R.id.client_connect_button);
-		connectButton.setOnClickListener(new View.OnClickListener() {
+		Button getRadioButton = (Button) view.findViewById(R.id.client_get_radio_button);
+		getRadioButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (StringUtils.isNullOrEmpty(ipAddress) || StringUtils.isNullOrEmpty(port)) {
@@ -45,6 +45,35 @@ public class ClientView extends BaseFragmentView {
 				} else {
 					hideKeyboard();
 					viewListener.getRadio(ipAddress, port);
+				}
+			}
+		});
+		Button turnOffNetworkButton = (Button) view.findViewById(
+			R.id.client_turn_off_network_button);
+		turnOffNetworkButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (StringUtils.isNullOrEmpty(ipAddress) || StringUtils.isNullOrEmpty(port)) {
+					ToastUtils.showShort(viewContextInject(Context.class),
+										 viewContextInject(Context.class).getString(
+											 R.string.empty_fields));
+				} else {
+					hideKeyboard();
+					viewListener.turnOffNetwork(ipAddress, port);
+				}
+			}
+		});
+		Button turnOnNetworkButton = (Button) view.findViewById(R.id.client_turn_on_network_button);
+		turnOnNetworkButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (StringUtils.isNullOrEmpty(ipAddress) || StringUtils.isNullOrEmpty(port)) {
+					ToastUtils.showShort(viewContextInject(Context.class),
+										 viewContextInject(Context.class).getString(
+											 R.string.empty_fields));
+				} else {
+					hideKeyboard();
+					viewListener.turnOnNetwork(ipAddress, port);
 				}
 			}
 		});
@@ -87,11 +116,15 @@ public class ClientView extends BaseFragmentView {
 	
 	interface ViewListener {
 		
-		void getRadio(String ipAddress, String port);
-		
 		void clearScreen();
 		
 		void onResponseReceived(String response);
+		
+		void getRadio(String ipAddress, String port);
+		
+		void turnOffNetwork(String ipAddress, String port);
+		
+		void turnOnNetwork(String ipAddress, String port);
 	}
 	
 }

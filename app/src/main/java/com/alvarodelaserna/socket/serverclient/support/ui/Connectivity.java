@@ -318,7 +318,7 @@ public class Connectivity {
 		return response.toString();
 	}
 	
-	public void setMobileDataEnabled(Context context, boolean enabled)
+	public static void setMobileDataEnabled(Context context, boolean enabled)
 		throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException,
 			   NoSuchMethodException, InvocationTargetException {
 		final ConnectivityManager conman = (ConnectivityManager) context.getSystemService(

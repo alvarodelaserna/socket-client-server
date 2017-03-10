@@ -3,6 +3,8 @@ package com.alvarodelaserna.socket.serverclient.main.server;
 import android.content.Context;
 import com.alvarodelaserna.socket.serverclient.support.base.BaseFragment;
 import com.alvarodelaserna.socket.serverclient.support.base.BaseInteractor;
+import com.alvarodelaserna.socket.serverclient.support.ui.Connectivity;
+import java.net.Socket;
 
 public class ServerFragment extends BaseFragment<ServerView, BaseInteractor> {
 	
@@ -40,9 +42,32 @@ public class ServerFragment extends BaseFragment<ServerView, BaseInteractor> {
 					fragmentView.updateMessage(message);
 				}
 			}
+			
+			@Override
+			public void onTurnOffNetwork(Socket socket) {
+				switchNetworkState(socket, false);
+			}
+			
+			@Override
+			public void onTurnOnNetwork(Socket socket) {
+				switchNetworkState(socket, true);
+			}
 		});
 		if (fragmentView != null) {
 			fragmentView.updateIpAddress(server.getIpAddress() + ":" + server.getPort());
+		}
+	}
+	
+	private void switchNetworkState(Socket socket, boolean enabled) {
+		String result = "OK";
+		try {
+			Connectivity.setMobileDataEnabled(viewContextInject(Context.class), enabled);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = "ERROR";
+		}
+		if (server != null) {
+			server.sendResponse(socket, result);
 		}
 	}
 	
@@ -57,5 +82,9 @@ public class ServerFragment extends BaseFragment<ServerView, BaseInteractor> {
 		void onMessageSent(String message);
 		
 		void onMessageUpdate(String message);
+		
+		void onTurnOffNetwork(Socket socket);
+		
+		void onTurnOnNetwork(Socket socket);
 	}
 }

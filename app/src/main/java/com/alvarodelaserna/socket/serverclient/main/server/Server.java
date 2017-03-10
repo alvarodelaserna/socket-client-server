@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
@@ -93,10 +92,28 @@ public class Server {
 			if (to != null) {
 				message += "Request: " + to.value + "\n";
 				switch (to.value) {
+					case Request.TURN_ON_NETWORK:
+						turnOnNetwork(socket);
+						break;
+					case Request.TURN_OFF_NETWORK:
+						turnOffNetwork(socket);
+						break;
 					default:
 						getRadioInfoAndSendToClient(socket);
 						break;
 				}
+			}
+		}
+		
+		private void turnOnNetwork(Socket socket) {
+			if (listener != null) {
+				listener.onTurnOnNetwork(socket);
+			}
+		}
+		
+		private void turnOffNetwork(Socket socket) {
+			if (listener != null) {
+				listener.onTurnOffNetwork(socket);
 			}
 		}
 		
@@ -105,6 +122,11 @@ public class Server {
 			getRadioThread.run();
 		}
 		
+	}
+	
+	public void sendResponse(Socket socket, String result) {
+		SendResultThread sendResultThread = new SendResultThread(socket, result);
+		sendResultThread.run();
 	}
 	
 	private class GetRadioThread extends Thread {
@@ -145,6 +167,50 @@ public class Server {
 				e.printStackTrace();
 			}
 			String msgReply = responseBody.toString();
+			try {
+				outputStream = hostThreadSocket.getOutputStream();
+				PrintStream printStream = new PrintStream(outputStream);
+				printStream.print(msgReply);
+				printStream.close();
+				message += "Sent: \n" + StringUtils.formatString(msgReply) + "\n";
+				activity.runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						listener.onMessageSent(message);
+					}
+				});
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+				message += "Something went wrong! " + e.toString() + "\n";
+			}
+			activity.runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					listener.onMessageUpdate(message);
+				}
+			});
+		}
+		
+	}
+	
+	private class SendResultThread extends Thread {
+		
+		private Socket hostThreadSocket;
+		private String result;
+		
+		SendResultThread(Socket socket, String result) {
+			hostThreadSocket = socket;
+			this.result = result;
+		}
+		
+		@Override
+		public void run() {
+			OutputStream outputStream;
+			
+			String msgReply = result;
 			try {
 				outputStream = hostThreadSocket.getOutputStream();
 				PrintStream printStream = new PrintStream(outputStream);
