@@ -40,7 +40,7 @@ public class ClientView extends BaseFragmentView {
 										 viewContextInject(Context.class).getString(
 											 R.string.empty_fields));
 				} else {
-					viewListener.onGetRadio(ipAddress, port);
+					viewListener.getRadio(ipAddress, port);
 				}
 			}
 		});
@@ -48,7 +48,7 @@ public class ClientView extends BaseFragmentView {
 		clearButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				viewListener.onClearScreen();
+				viewListener.clearScreen();
 			}
 		});
 		ipAddressEditText = (TextInputEditText) view.findViewById(R.id.client_address_edit_text);
@@ -78,9 +78,9 @@ public class ClientView extends BaseFragmentView {
 	
 	interface ViewListener {
 		
-		void onGetRadio(String ipAddress, String port);
+		void getRadio(String ipAddress, String port);
 		
-		void onClearScreen();
+		void clearScreen();
 		
 		void onResponseReceived(String response);
 	}

@@ -32,7 +32,6 @@ public class Client  extends AsyncTask<Void, Void, Void> {
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
 				1024);
 			byte[] buffer = new byte[1024];
-			
 			int bytesRead;
 			InputStream inputStream = socket.getInputStream();
 
@@ -55,7 +54,6 @@ public class Client  extends AsyncTask<Void, Void, Void> {
 				try {
 					socket.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

@@ -10,7 +10,7 @@ android {
 
 	defaultConfig {
 		applicationId "com.alvarodelaserna.socket.serverclient"
-		minSdkVersion 23
+		minSdkVersion 18
 		targetSdkVersion 25
 		versionCode code
 		versionName name

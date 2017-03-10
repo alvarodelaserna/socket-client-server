@@ -21,13 +21,13 @@ public class ClientFragment extends BaseFragment<ClientView, BaseInteractor> {
 		return new ClientView(new ClientView.ViewListener() {
 						
 			@Override
-			public void onGetRadio(String ipAddress, String port) {
+			public void getRadio(String ipAddress, String port) {
 				client = new Client(ipAddress, Integer.parseInt(port), this);
 				client.execute();
 			}
 			
 			@Override
-			public void onClearScreen() {
+			public void clearScreen() {
 				if (fragmentView != null) {
 					fragmentView.clearMessage();
 				}

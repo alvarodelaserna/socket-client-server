@@ -24,6 +24,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -31,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Connectivity {
+	
 	/**
 	 * Get the network info
 	 */
@@ -38,6 +42,14 @@ public class Connectivity {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
 			Context.CONNECTIVITY_SERVICE);
 		return cm.getActiveNetworkInfo();
+	}
+	
+	/**
+	 * Check if device is connected
+	 */
+	public static boolean isConnected(Context context) {
+		NetworkInfo info = getNetworkInfo(context);
+		return (info != null && info.isConnected());
 	}
 	
 	/**
@@ -304,5 +316,23 @@ public class Connectivity {
 			}
 		}
 		return response.toString();
+	}
+	
+	public void setMobileDataEnabled(Context context, boolean enabled)
+		throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException,
+			   NoSuchMethodException, InvocationTargetException {
+		final ConnectivityManager conman = (ConnectivityManager) context.getSystemService(
+			Context.CONNECTIVITY_SERVICE);
+		final Class conmanClass = Class.forName(conman.getClass()
+													.getName());
+		final Field connectivityManagerField = conmanClass.getDeclaredField("mService");
+		connectivityManagerField.setAccessible(true);
+		final Object connectivityManager = connectivityManagerField.get(conman);
+		final Class connectivityManagerClass = Class.forName(connectivityManager.getClass()
+																 .getName());
+		final Method setMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod(
+			"setMobileDataEnabled", Boolean.TYPE);
+		setMobileDataEnabledMethod.setAccessible(true);
+		setMobileDataEnabledMethod.invoke(connectivityManager, enabled);
 	}
 }

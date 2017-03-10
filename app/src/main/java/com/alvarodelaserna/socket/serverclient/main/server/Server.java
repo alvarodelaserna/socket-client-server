@@ -71,9 +71,9 @@ public class Server {
 						}
 					});
 					
-					SocketServerReplyThread socketServerReplyThread = new SocketServerReplyThread(
+					GetRadioThread getRadioThread = new GetRadioThread(
 						socket, count);
-					socketServerReplyThread.run();
+					getRadioThread.run();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -82,12 +82,12 @@ public class Server {
 		
 	}
 	
-	private class SocketServerReplyThread extends Thread {
+	private class GetRadioThread extends Thread {
 		
 		private Socket hostThreadSocket;
 		int cnt;
 		
-		SocketServerReplyThread(Socket socket, int c) {
+		GetRadioThread(Socket socket, int c) {
 			hostThreadSocket = socket;
 			cnt = c;
 		}
@@ -95,6 +95,7 @@ public class Server {
 		@Override
 		public void run() {
 			OutputStream outputStream;
+			
 			JSONObject responseBody = new JSONObject();
 			try {
 				JSONObject cellInfo = Connectivity.getCellInfo(context);
@@ -138,7 +139,7 @@ public class Server {
 				
 			} catch (IOException e) {
 				e.printStackTrace();
-				message += "Something wrong! " + e.toString() + "\n";
+				message += "Something went wrong! " + e.toString() + "\n";
 			}
 			
 			activity.runOnUiThread(new Runnable() {
