@@ -1,0 +1,25 @@
+<resources>
+	<string name="server">Server</string>
+	<string name="start">Start</string>
+	<string name="selected">Selected:</string>
+	<string name="socket_server_client">Socket Server-Client</string>
+	<string name="label_navigate_button">navigate_button</string>
+	<string name="label_landing_sign_up_linear_layout">landing_sign_up_linear_layout</string>
+	<string name="label_landing_layout_button_sign_in">landing_layout_button_sign_in</string>
+	<string name="multiple_steps">Multipart session</string>
+	<string name="finished">Time\'s up!</string>
+	<string name="not_implemented">Not implemented yet</string>
+	<string name="time_s_up">TIME\'S UP</string>
+	<string name="was_it_an_effective_meeting">Was it an effective meeting?</string>
+	<string name="yes_we_did_it">Yes, we did it</string>
+	<string name="so_so">So, so</string>
+	<string name="dont_think_so">No, I don\'t think so</string>
+	<string name="survey">Survey</string>
+	<string name="client">Client</string>
+	<string name="sent">Sent: %s</string>
+	<string name="server_ip_address">Server IP address</string>
+	<string name="server_port_number">Server port number</string>
+	<string name="connect">Connect</string>
+	<string name="clear">Clear</string>
+	<string name="empty_fields">There are empty fields</string>
+</resources>
