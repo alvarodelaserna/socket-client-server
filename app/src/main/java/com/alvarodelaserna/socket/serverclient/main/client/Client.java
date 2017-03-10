@@ -1,14 +1,18 @@
 package com.alvarodelaserna.socket.serverclient.main.client;
 
 import android.os.AsyncTask;
-import com.alvarodelaserna.socket.serverclient.instruments.utils.StringUtils;
+import com.alvarodelaserna.socket.serverclient.main.server.Server;
+import com.alvarodelaserna.socket.serverclient.support.ui.Request;
+import com.alvarodelaserna.socket.serverclient.support.ui.StringUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Client  extends AsyncTask<Void, Void, Void> {
+public class Client  extends AsyncTask<String, Void, Void> {
 	
 	private String dstAddress;
 	private int dstPort;
@@ -22,12 +26,17 @@ public class Client  extends AsyncTask<Void, Void, Void> {
 	}
 	
 	@Override
-	protected Void doInBackground(Void... arg0) {
+	protected Void doInBackground(String... arg0) {
 		
 		Socket socket = null;
 		
 		try {
 			socket = new Socket(dstAddress, dstPort);
+			
+			OutputStream os = socket.getOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(os);
+			Request request = new Request(arg0[0]);
+			oos.writeObject(request);
 			
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
 				1024);

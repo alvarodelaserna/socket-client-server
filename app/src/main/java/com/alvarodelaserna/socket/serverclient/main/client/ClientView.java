@@ -8,7 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.alvarodelaserna.socket.serverclient.R;
-import com.alvarodelaserna.socket.serverclient.instruments.utils.StringUtils;
+import com.alvarodelaserna.socket.serverclient.support.ui.KeyBoardHelper;
+import com.alvarodelaserna.socket.serverclient.support.ui.StringUtils;
 import com.alvarodelaserna.socket.serverclient.support.base.BaseFragmentView;
 import com.alvarodelaserna.socket.serverclient.support.base.ViewNavigator;
 import com.alvarodelaserna.socket.serverclient.support.ui.TextWatcher;
@@ -21,6 +22,7 @@ public class ClientView extends BaseFragmentView {
 	private TextView receivedMessage;
 	
 	private String ipAddress, port;
+	private View mainView;
 	
 	ClientView(ViewListener viewListener) {
 		super(R.layout.client_layout);
@@ -29,6 +31,7 @@ public class ClientView extends BaseFragmentView {
 	
 	@Override
 	protected void setUpView(final View view) {
+		mainView = view;
 		Toolbar toolbar = (Toolbar) view.findViewById(R.id.client_toolbar);
 		viewContextInject(ViewNavigator.class).setUpNavigation(toolbar);
 		Button connectButton = (Button) view.findViewById(R.id.client_connect_button);
@@ -40,6 +43,7 @@ public class ClientView extends BaseFragmentView {
 										 viewContextInject(Context.class).getString(
 											 R.string.empty_fields));
 				} else {
+					hideKeyboard();
 					viewListener.getRadio(ipAddress, port);
 				}
 			}
@@ -48,6 +52,7 @@ public class ClientView extends BaseFragmentView {
 		clearButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				hideKeyboard();
 				viewListener.clearScreen();
 			}
 		});
@@ -66,6 +71,10 @@ public class ClientView extends BaseFragmentView {
 			}
 		});
 		receivedMessage = (TextView) view.findViewById(R.id.client_response_text_view);
+	}
+	
+	private void hideKeyboard() {
+		KeyBoardHelper.hideKeyBoard(viewContextInject(Context.class), mainView);
 	}
 	
 	void updateMessageReceived(String response) {

@@ -2,6 +2,7 @@ package com.alvarodelaserna.socket.serverclient.main.client;
 
 import com.alvarodelaserna.socket.serverclient.support.base.BaseFragment;
 import com.alvarodelaserna.socket.serverclient.support.base.BaseInteractor;
+import com.alvarodelaserna.socket.serverclient.support.ui.Request;
 
 public class ClientFragment extends BaseFragment<ClientView, BaseInteractor> {
 	
@@ -22,8 +23,8 @@ public class ClientFragment extends BaseFragment<ClientView, BaseInteractor> {
 						
 			@Override
 			public void getRadio(String ipAddress, String port) {
-				client = new Client(ipAddress, Integer.parseInt(port), this);
-				client.execute();
+				client = new Client(ipAddress.trim(), Integer.parseInt(port.trim()), this);
+				client.execute(Request.GET_RADIO);
 			}
 			
 			@Override

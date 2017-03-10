@@ -1,4 +1,4 @@
-package com.alvarodelaserna.socket.serverclient.instruments.utils;
+package com.alvarodelaserna.socket.serverclient.support.ui;
 
 public class StringUtils {
 
