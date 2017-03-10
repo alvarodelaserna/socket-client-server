@@ -4,10 +4,10 @@ def code = 1
 def name = "v0.1"
 
 android {
-
+	
 	compileSdkVersion 25
 	buildToolsVersion "25.0.2"
-
+	
 	defaultConfig {
 		applicationId "com.alvarodelaserna.socket.serverclient"
 		minSdkVersion 18
@@ -17,14 +17,14 @@ android {
 		multiDexEnabled true
 		setProperty("archivesBaseName", "SocketServerClient-$versionName")
 	}
-
+	
 	buildTypes {
 		release {
 			minifyEnabled true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
 	}
-
+	
 	productFlavors {
 		dev {
 			applicationId "com.alvarodelaserna.socket.serverclient.dev"
@@ -33,7 +33,7 @@ android {
 			resValue "string", "version_name", versionName
 		}
 	}
-
+	
 	compileOptions {
 		incremental false
 	}
@@ -46,13 +46,11 @@ dependencies {
 	compile fileTree(dir: 'libs', include: '*.jar')
 	compile "com.android.support:appcompat-v7:${supportVersion}",
 		"com.android.support:design:${supportVersion}",
-		"com.android.support:percent:${supportVersion}",
 		"com.android.support:recyclerview-v7:${supportVersion}"
-	compile 'com.wokdsem.kommander:kommander:0.10.1',
-		'com.wokdsem.kinject:kinject:1.1.0'
+	compile 'com.wokdsem.kinject:kinject:1.1.0'
 	compile 'com.github.esafirm.android-image-picker:imagepicker:1.2.5@aar'
 	compile 'com.github.rey5137:material:1.2.4'
-
+	
 	annotationProcessor 'com.wokdsem.kinject:kinject-compiler:1.1.0'
 	testCompile 'junit:junit:4.12'
 }
