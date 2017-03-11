@@ -19,6 +19,7 @@ import android.telephony.CellSignalStrengthCdma;
 import android.telephony.CellSignalStrengthGsm;
 import android.telephony.CellSignalStrengthLte;
 import android.telephony.CellSignalStrengthWcdma;
+import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,6 +33,8 @@ import java.net.URL;
 import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static android.telephony.TelephonyManager.*;
 
 public class Connectivity {
 	
@@ -97,15 +100,13 @@ public class Connectivity {
 	}
 	
 	/**
-	 * Get network info
+	 * Get GSM network info
 	 */
-	public static JSONObject getNetworkInfoObj(Context context) {
+	public static JSONObject getGsmInfoObj(Context context) {
 		JSONObject result = new JSONObject();
 		TelephonyManager manager = (TelephonyManager) context.getSystemService(
 			Context.TELEPHONY_SERVICE);
 		try {
-			result.put("carrierName", manager.getNetworkOperatorName());
-			result.put("countryISO", manager.getNetworkCountryIso());
 			int networkType = manager.getNetworkType();
 			String netType;
 			switch (networkType) {
@@ -134,6 +135,51 @@ public class Connectivity {
 					netType = "Unknown";
 			}
 			result.put("type", netType);
+			String networkOperator = manager.getNetworkOperator();
+			result.put("networkOperator", StringUtils.isNullOrEmpty(networkOperator) ?
+									  "Unavailable": networkOperator);
+			String networkOperatorName = manager.getNetworkOperatorName();
+			result.put("carrierName", StringUtils.isNullOrEmpty(networkOperatorName) ?
+									  "Unavailable": networkOperatorName);
+			String simOperator = manager.getSimOperator();
+			result.put("simOperator", StringUtils.isNullOrEmpty(simOperator) ?
+									  "Unavailable": simOperator);
+			String simCountryIso = manager.getSimCountryIso();
+			result.put("simCountryIso", StringUtils.isNullOrEmpty(simCountryIso) ?
+									  "Unavailable": simCountryIso);
+			String networkCountryIso = manager.getNetworkCountryIso();
+			result.put("networkCountryIso", StringUtils.isNullOrEmpty(networkCountryIso) ?
+									 "Unavailable": networkCountryIso);
+			int simState = manager.getSimState();
+			String sim;
+			switch (simState) {
+				case SIM_STATE_UNKNOWN:
+					sim = "Unknown";
+					break;
+				case SIM_STATE_ABSENT:
+					sim = "Absent";
+					break;
+				case SIM_STATE_PIN_REQUIRED:
+					sim = "Locked. PIN is required";
+					break;
+				case SIM_STATE_PUK_REQUIRED:
+					sim = "Locked. PUK is required";
+					break;
+				case SIM_STATE_NETWORK_LOCKED:
+					sim = "Locked. Requires a network PIN to unlock";
+					break;
+				case SIM_STATE_READY:
+					sim = "Present";
+					break;
+				default:
+				// SIM_STATE_NOT_READY
+				// SIM_STATE_PERM_DISABLED
+				// SIM_STATE_CARD_IO_ERROR
+					sim = "Error";
+					break;
+			}
+			result.put("simState", StringUtils.isNullOrEmpty(sim) ?
+											"Unavailable": sim);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -254,11 +300,15 @@ public class Connectivity {
 			}
 		}
 		try {
-			result.put("location", cellLocation.toString());
+			if (cellLocation != null) {
+				result.put("location", cellLocation.toString());
+			} else {
+				result.put("location", "Unavailable");
+			}
 			if (cellInfoObj.has("type")) {
 				result.put("info", cellInfoObj);
 			} else {
-				result.put("info", "Unavailable for this device");
+				result.put("info", "Unavailable");
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

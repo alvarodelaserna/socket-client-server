@@ -1,8 +1,6 @@
 package com.alvarodelaserna.socket.serverclient.main;
 
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import com.alvarodelaserna.socket.serverclient.main.landing.LandingFragment;
 import com.alvarodelaserna.socket.serverclient.support.base.ActivityNavigator;
 import com.alvarodelaserna.socket.serverclient.support.base.BaseActivity;

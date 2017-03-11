@@ -5,9 +5,9 @@ import java.io.Serializable;
 public class Request implements Serializable {
 	
 	public static final String GET_RADIO = "getRadio";
-	public static final String TURN_OFF_NETWORK = "turnOffNetwork";
-	public static final String TURN_ON_NETWORK = "turnOnNetwork";
-	public static final String MAKE_CONNECTION = "connect";
+	public static final String SET_REGISTER_OFF = "setRegisterOff";
+	public static final String SET_REGISTER_ON = "setRegisterOn";
+	public static final String CONNECT = "connect";
 	public String value;
 	
 	public Request(String value) {

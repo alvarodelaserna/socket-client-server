@@ -51,7 +51,8 @@ public class ClientView extends BaseFragmentView {
 				}
 			}
 		});
-		requestButtonsContainer = (LinearLayout) view.findViewById(R.id.client_request_buttons_container);
+		requestButtonsContainer = (LinearLayout) view.findViewById(
+			R.id.client_request_buttons_container);
 		Button getRadioButton = (Button) view.findViewById(R.id.client_get_radio_button);
 		getRadioButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -66,9 +67,9 @@ public class ClientView extends BaseFragmentView {
 				}
 			}
 		});
-		Button turnOffNetworkButton = (Button) view.findViewById(
-			R.id.client_turn_off_network_button);
-		turnOffNetworkButton.setOnClickListener(new View.OnClickListener() {
+		Button setRegisterOffButton = (Button) view.findViewById(
+			R.id.client_set_register_off_button);
+		setRegisterOffButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (StringUtils.isNullOrEmpty(ipAddress) || StringUtils.isNullOrEmpty(port)) {
@@ -77,12 +78,12 @@ public class ClientView extends BaseFragmentView {
 											 R.string.empty_fields));
 				} else {
 					hideKeyboard();
-					viewListener.turnOffNetwork(ipAddress, port);
+					viewListener.setRegisterOff(ipAddress, port);
 				}
 			}
 		});
-		Button turnOnNetworkButton = (Button) view.findViewById(R.id.client_turn_on_network_button);
-		turnOnNetworkButton.setOnClickListener(new View.OnClickListener() {
+		Button setRegisterOnButton = (Button) view.findViewById(R.id.client_set_register_on_button);
+		setRegisterOnButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (StringUtils.isNullOrEmpty(ipAddress) || StringUtils.isNullOrEmpty(port)) {
@@ -91,7 +92,7 @@ public class ClientView extends BaseFragmentView {
 											 R.string.empty_fields));
 				} else {
 					hideKeyboard();
-					viewListener.turnOnNetwork(ipAddress, port);
+					viewListener.setRegisterOn(ipAddress, port);
 				}
 			}
 		});
@@ -137,6 +138,11 @@ public class ClientView extends BaseFragmentView {
 		requestButtonsContainer.setVisibility(View.VISIBLE);
 	}
 	
+	public void disableInputs() {
+		ipAddressEditText.setEnabled(false);
+		portEditText.setEnabled(false);
+	}
+	
 	public interface ViewListener {
 		
 		void clearScreen();
@@ -145,11 +151,12 @@ public class ClientView extends BaseFragmentView {
 		
 		void getRadio(String ipAddress, String port);
 		
-		void turnOffNetwork(String ipAddress, String port);
+		void setRegisterOff(String ipAddress, String port);
 		
-		void turnOnNetwork(String ipAddress, String port);
+		void setRegisterOn(String ipAddress, String port);
 		
 		void connect(String ipAddress, String port);
+		
 	}
 	
 }

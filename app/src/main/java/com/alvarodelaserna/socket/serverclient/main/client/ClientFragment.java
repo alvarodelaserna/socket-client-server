@@ -3,7 +3,6 @@ package com.alvarodelaserna.socket.serverclient.main.client;
 import com.alvarodelaserna.socket.serverclient.support.base.BaseFragment;
 import com.alvarodelaserna.socket.serverclient.support.base.BaseInteractor;
 import com.alvarodelaserna.socket.serverclient.support.ui.Request;
-import com.wokdsem.kommander.Response;
 
 public class ClientFragment extends BaseFragment<ClientView, BaseInteractor> {
 	
@@ -39,6 +38,7 @@ public class ClientFragment extends BaseFragment<ClientView, BaseInteractor> {
 			public void onResponseReceived(String response) {
 				if (fragmentView != null) {
 					if (!response.equals("CONNECTED")) {
+						fragmentView.disableInputs();
 						fragmentView.updateMessageReceived(response);
 					} else {
 						fragmentView.enableRequestButtons();;
@@ -47,22 +47,23 @@ public class ClientFragment extends BaseFragment<ClientView, BaseInteractor> {
 			}
 			
 			@Override
-			public void turnOffNetwork(String ipAddress, String port) {
+			public void setRegisterOff(String ipAddress, String port) {
 				client = new Client(ipAddress.trim(), Integer.parseInt(port.trim()), this);
-				client.execute(Request.TURN_OFF_NETWORK);
+				client.execute(Request.SET_REGISTER_OFF);
 			}
 			
 			@Override
-			public void turnOnNetwork(String ipAddress, String port) {
+			public void setRegisterOn(String ipAddress, String port) {
 				client = new Client(ipAddress.trim(), Integer.parseInt(port.trim()), this);
-				client.execute(Request.TURN_ON_NETWORK);
+				client.execute(Request.SET_REGISTER_ON);
 			}
 			
 			@Override
 			public void connect(String ipAddress, String port) {
 				client = new Client(ipAddress.trim(), Integer.parseInt(port.trim()), this);
-				client.execute(Request.MAKE_CONNECTION);
+				client.execute(Request.CONNECT);
 			}
+			
 		});
 	}
 	

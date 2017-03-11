@@ -95,10 +95,10 @@ public class Server {
 					case Request.GET_RADIO:
 						getRadio(socket);
 						break;
-					case Request.TURN_ON_NETWORK:
+					case Request.SET_REGISTER_ON:
 						setRegisterOn(socket);
 						break;
-					case Request.TURN_OFF_NETWORK:
+					case Request.SET_REGISTER_OFF:
 						setRegisterOff(socket);
 						break;
 					default:
@@ -154,24 +154,26 @@ public class Server {
 			JSONObject responseBody = new JSONObject();
 			try {
 				JSONObject cellInfo = Connectivity.getCellInfo(context);
-				cellInfo.put("connectionSpeed", Connectivity.getConnectionSpeed(context));
-				responseBody.put("cell", cellInfo);
-				JSONObject networkInfoObj = Connectivity.getNetworkInfoObj(context);
+				responseBody.put("cellInfo", cellInfo);
+				JSONObject networkInfoObj = new JSONObject();
 				try {
 					NetworkInfo networkInfo = Connectivity.getNetworkInfo(context);
+					networkInfoObj.put("connectionType", networkInfo.getTypeName());
 					networkInfoObj.put("status", networkInfo.getState());
-					networkInfoObj.put("netName", networkInfo.getExtraInfo()
+					networkInfoObj.put("GSM", Connectivity.getGsmInfoObj(context));
+					JSONObject wifiInfoObj = new JSONObject();
+					wifiInfoObj.put("netName", networkInfo.getExtraInfo()
 						.replace("\"", ""));
-					networkInfoObj.put("type", networkInfo.getTypeName());
+					wifiInfoObj.put("connectionSpeed", Connectivity.getConnectionSpeed(context));
+					wifiInfoObj.put("isConnectedOrConnecting",
+									   networkInfo.isConnectedOrConnecting());
+					networkInfoObj.put("WiFi", wifiInfoObj);
 					networkInfoObj.put("isRoaming", networkInfo.isRoaming());
 					networkInfoObj.put("isAvailable", networkInfo.isAvailable());
-					networkInfoObj.put("isConnectedOrConnecting",
-									   networkInfo.isConnectedOrConnecting());
-					networkInfoObj.put("isFailover", networkInfo.isFailover());
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
-				responseBody.put("network", networkInfoObj);
+				responseBody.put("networkInfo", networkInfoObj);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

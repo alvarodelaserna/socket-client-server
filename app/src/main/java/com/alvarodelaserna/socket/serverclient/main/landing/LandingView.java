@@ -2,8 +2,6 @@ package com.alvarodelaserna.socket.serverclient.main.landing;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.alvarodelaserna.socket.serverclient.R;
 import com.alvarodelaserna.socket.serverclient.support.base.BaseFragmentView;
 
