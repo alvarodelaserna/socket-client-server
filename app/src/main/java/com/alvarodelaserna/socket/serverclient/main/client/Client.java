@@ -11,6 +11,9 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * This class implements all the functionality of the client
+ */
 class Client  extends AsyncTask<String, Void, Void> {
 	
 	private String dstAddress;
@@ -51,6 +54,12 @@ class Client  extends AsyncTask<String, Void, Void> {
 		return null;
 	}
 	
+	/**
+	 * Makes a request to the server
+	 * @param socket a {@link java.net.Socket Socket} object connected to the server
+	 * @param requestName a {@link String String} representing the type of request
+	 * @throws IOException if an error occurs while writing to the buffer
+	 */
 	private void makeRequest(Socket socket, String requestName) throws IOException {
 		OutputStream os = socket.getOutputStream();
 		ObjectOutputStream oos = new ObjectOutputStream(os);

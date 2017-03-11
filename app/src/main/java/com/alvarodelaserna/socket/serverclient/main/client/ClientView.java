@@ -146,6 +146,8 @@ public class ClientView extends BaseFragmentView {
 	
 	public interface ViewListener {
 		
+		void makeRequest(String ipAddress, int port, String requestName);
+		
 		void clearScreen();
 		
 		void onResponseReceived(String response);

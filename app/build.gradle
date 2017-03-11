@@ -10,8 +10,8 @@ android {
 	
 	defaultConfig {
 		applicationId "com.alvarodelaserna.socket.serverclient"
-		minSdkVersion 18
-		targetSdkVersion 25
+		minSdkVersion 19
+		targetSdkVersion 23
 		versionCode code
 		versionName name
 		multiDexEnabled true

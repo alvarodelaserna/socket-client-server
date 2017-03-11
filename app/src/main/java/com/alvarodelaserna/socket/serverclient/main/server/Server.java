@@ -20,6 +20,9 @@ import java.util.Enumeration;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * This class implements all the functionality of the server
+ */
 public class Server {
 	
 	private final Context context;
@@ -51,6 +54,10 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * This class opens a background thread to initialize the socket and parse its contents,
+	 * sending the appropriate response to the client afterwards
+	 */
 	private class SocketServerThread extends Thread {
 		
 		@Override
@@ -66,6 +73,12 @@ public class Server {
 			}
 		}
 		
+		/**
+		 * Parses socket contents
+		 * @param socket a {@link java.net.Socket Socket} object representing the request sent
+		 * from the client
+		 * @throws IOException if the input strem cannot be read
+		 */
 		private void parseSocket(Socket socket) throws IOException {
 			if (!StringUtils.isNullOrEmpty(message)) {
 				message = "";
@@ -123,25 +136,36 @@ public class Server {
 			}
 		}
 		
+		/**
+		 * Gathers radio data and sends it to  the client using an instance of
+		 * {@link SendRadioDataToClientThread SendRadioDataToClientThread}.
+		 * @param socket a {@link java.net.Socket Socket} object representing the request sent
+		 * from the client
+		 */
 		private void getRadio(Socket socket) {
 			String radioAsString = getRadioAsString();
-			SendRadioToClientThread sendRadioToClientThread = new SendRadioToClientThread(socket, radioAsString);
-			sendRadioToClientThread.run();
+			SendRadioDataToClientThread sendRadioDataToClientThread = new SendRadioDataToClientThread(socket, radioAsString);
+			sendRadioDataToClientThread.run();
 		}
 		
 	}
 	
+	/**
+	 * Sends response to client using an instance of {@link SendResultThread SendResultThread}.
+	 * @param socket a {@link java.net.Socket Socket} object representing the request sent
+	 * from the client
+	 */
 	void sendResponse(Socket socket, String result) {
 		SendResultThread sendResultThread = new SendResultThread(socket, result);
 		sendResultThread.run();
 	}
 	
-	private class SendRadioToClientThread extends Thread {
+	private class SendRadioDataToClientThread extends Thread {
 		
 		private Socket hostThreadSocket;
 		private String radioData;
 		
-		SendRadioToClientThread(Socket socket, String radioAsString) {
+		SendRadioDataToClientThread(Socket socket, String radioAsString) {
 			hostThreadSocket = socket;
 			radioData = radioAsString;
 		}
@@ -178,6 +202,10 @@ public class Server {
 		
 	}
 	
+	/**
+	 * Gets radio data as a JSON object and
+	 * @return a stringified representation of said object
+	 */
 	private String getRadioAsString() {
 		JSONObject responseBody = new JSONObject();
 		try {
@@ -208,6 +236,10 @@ public class Server {
 		return responseBody.toString();
 	}
 	
+	/**
+	 * This class opens a background thread to send a response to the client and displays the
+	 * information on the screen
+	 */
 	private class SendResultThread extends Thread {
 		
 		private Socket hostThreadSocket;

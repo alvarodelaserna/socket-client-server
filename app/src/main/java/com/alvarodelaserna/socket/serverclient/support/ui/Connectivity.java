@@ -40,6 +40,9 @@ public class Connectivity {
 	
 	/**
 	 * Get the network info
+	 *
+	 * @return {@link NetworkInfo NetworkInfo} object
+	 * @see ConnectivityManager#getActiveNetworkInfo()
 	 */
 	public static NetworkInfo getNetworkInfo(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
@@ -48,15 +51,9 @@ public class Connectivity {
 	}
 	
 	/**
-	 * Check if device is connected
-	 */
-	public static boolean isConnected(Context context) {
-		NetworkInfo info = getNetworkInfo(context);
-		return (info != null && info.isConnected());
-	}
-	
-	/**
-	 * Get connection speed
+	 * Get connection speed as String
+	 *
+	 * @see TelephonyManager#getNetworkType()
 	 */
 	public static String getConnectionSpeed(Context context) {
 		TelephonyManager mTelephonyManager = (TelephonyManager) context.getSystemService(
@@ -101,6 +98,15 @@ public class Connectivity {
 	
 	/**
 	 * Get GSM network info
+	 * @return {@link JSONObject JSON} object containing the data
+	 *
+	 * @see TelephonyManager#getNetworkType()
+	 * @see TelephonyManager#getNetworkOperator()
+	 * @see TelephonyManager#getNetworkOperatorName()
+	 * @see TelephonyManager#getSimOperator()
+	 * @see TelephonyManager#getSimCountryIso()
+	 * @see TelephonyManager#getNetworkCountryIso()
+	 * @see TelephonyManager#getSimState()
 	 */
 	public static JSONObject getGsmInfoObj(Context context) {
 		JSONObject result = new JSONObject();
@@ -133,23 +139,25 @@ public class Connectivity {
 					break;
 				default:
 					netType = "Unknown";
+					break;
 			}
 			result.put("type", netType);
 			String networkOperator = manager.getNetworkOperator();
-			result.put("networkOperator", StringUtils.isNullOrEmpty(networkOperator) ?
-									  "Unavailable": networkOperator);
+			result.put("networkOperator", StringUtils.isNullOrEmpty(networkOperator) ? "Unavailable"
+																					 : networkOperator);
 			String networkOperatorName = manager.getNetworkOperatorName();
-			result.put("carrierName", StringUtils.isNullOrEmpty(networkOperatorName) ?
-									  "Unavailable": networkOperatorName);
+			result.put("carrierName", StringUtils.isNullOrEmpty(networkOperatorName) ? "Unavailable"
+																					 : networkOperatorName);
 			String simOperator = manager.getSimOperator();
-			result.put("simOperator", StringUtils.isNullOrEmpty(simOperator) ?
-									  "Unavailable": simOperator);
+			result.put("simOperator",
+					   StringUtils.isNullOrEmpty(simOperator) ? "Unavailable" : simOperator);
 			String simCountryIso = manager.getSimCountryIso();
-			result.put("simCountryIso", StringUtils.isNullOrEmpty(simCountryIso) ?
-									  "Unavailable": simCountryIso);
+			result.put("simCountryIso",
+					   StringUtils.isNullOrEmpty(simCountryIso) ? "Unavailable" : simCountryIso);
 			String networkCountryIso = manager.getNetworkCountryIso();
-			result.put("networkCountryIso", StringUtils.isNullOrEmpty(networkCountryIso) ?
-									 "Unavailable": networkCountryIso);
+			result.put("networkCountryIso",
+					   StringUtils.isNullOrEmpty(networkCountryIso) ? "Unavailable"
+																	: networkCountryIso);
 			int simState = manager.getSimState();
 			String sim;
 			switch (simState) {
@@ -172,14 +180,13 @@ public class Connectivity {
 					sim = "Present";
 					break;
 				default:
-				// SIM_STATE_NOT_READY
-				// SIM_STATE_PERM_DISABLED
-				// SIM_STATE_CARD_IO_ERROR
+					// SIM_STATE_NOT_READY
+					// SIM_STATE_PERM_DISABLED
+					// SIM_STATE_CARD_IO_ERROR
 					sim = "Error";
 					break;
 			}
-			result.put("simState", StringUtils.isNullOrEmpty(sim) ?
-											"Unavailable": sim);
+			result.put("simState", StringUtils.isNullOrEmpty(sim) ? "Unavailable" : sim);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -188,6 +195,46 @@ public class Connectivity {
 	
 	/**
 	 * Get current cell information
+	 * @return {@link JSONObject JSON} object containing the data
+	 *
+	 * @see TelephonyManager#getCellLocation()
+	 * @see TelephonyManager#getAllCellInfo()
+	 *
+	 * @see CellInfoGsm#getCellIdentity()
+	 * @see CellInfoLte#getCellIdentity()
+	 * @see CellInfoCdma#getCellIdentity()
+	 * @see CellInfoWcdma#getCellIdentity()
+	 * @see CellInfoGsm#getCellSignalStrength()
+	 * @see CellInfoLte#getCellSignalStrength()
+	 * @see CellInfoCdma#getCellSignalStrength()
+	 * @see CellInfoWcdma#getCellSignalStrength()
+	 *
+	 * @see CellIdentityGsm#getCid()
+	 * @see CellIdentityGsm#getArfcn()
+	 * @see CellIdentityGsm#getBsic()
+	 * @see CellIdentityGsm#getLac()
+	 * @see CellIdentityGsm#getMcc()
+	 * @see CellIdentityGsm#getMnc()
+	 *
+	 * @see CellIdentityLte#getCi()
+	 * @see CellIdentityLte#getMnc()
+	 * @see CellIdentityLte#getMcc()
+	 * @see CellIdentityLte#getEarfcn()
+	 * @see CellIdentityLte#getPci()
+	 * @see CellIdentityLte#getTac()
+	 *
+	 * @see CellIdentityCdma#getSystemId()
+	 * @see CellIdentityCdma#getLatitude()
+	 * @see CellIdentityCdma#getBasestationId()
+	 * @see CellIdentityCdma#getLongitude()
+	 * @see CellIdentityCdma#getNetworkId()
+	 *
+	 * @see CellIdentityWcdma#getCid()
+	 * @see CellIdentityWcdma#getMcc()
+	 * @see CellIdentityWcdma#getLac()
+	 * @see CellIdentityWcdma#getMnc()
+	 * @see CellIdentityWcdma#getPsc()
+	 * @see CellIdentityWcdma#getUarfcn()
 	 */
 	public static JSONObject getCellInfo(Context context) {
 		JSONObject result = new JSONObject();
@@ -316,57 +363,20 @@ public class Connectivity {
 		return result;
 	}
 	
-	public static class GetPublicIPAddressTask extends AsyncTask<Void, Void, String> {
-		
-		private String server_response;
-		
-		@Override
-		protected String doInBackground(Void... args) {
-			URL url;
-			HttpURLConnection urlConnection;
-			try {
-				url = new URL("http://whatismyip.akamai.com/");
-				urlConnection = (HttpURLConnection) url.openConnection();
-				int responseCode = urlConnection.getResponseCode();
-				if (responseCode == HttpURLConnection.HTTP_OK) {
-					server_response = readStream(urlConnection.getInputStream());
-				}
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return server_response;
-		}
-		
-		@Override
-		protected void onPostExecute(String s) {
-			super.onPostExecute(s);
-		}
-	}
-	
-	private static String readStream(InputStream in) {
-		BufferedReader reader = null;
-		StringBuffer response = new StringBuffer();
-		try {
-			reader = new BufferedReader(new InputStreamReader(in));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				response.append(line);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return response.toString();
-	}
-	
+	/**
+	 * Enables or disables data network.
+	 * Works on devices with API level <= 18
+	 *
+	 * @see Class#getDeclaredMethod(String, Class[])
+	 * @see Method#setAccessible(boolean)
+	 * @see Method#invoke(Object, Object...)
+	 *
+	 * @throws ClassNotFoundException
+	 * @throws NoSuchFieldException
+	 * @throws IllegalAccessException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 */
 	public static void setMobileDataEnabled(Context context, boolean enabled)
 		throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException,
 			   NoSuchMethodException, InvocationTargetException {

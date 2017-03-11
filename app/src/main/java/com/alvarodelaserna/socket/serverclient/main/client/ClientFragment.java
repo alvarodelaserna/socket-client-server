@@ -11,20 +11,25 @@ public class ClientFragment extends BaseFragment<ClientView, BaseInteractor> {
 	public static ClientFragment newInstance() {
 		return new ClientFragment();
 	}
-
+	
 	@Override
 	protected BaseInteractor getInteractor() {
 		return BaseInteractor.EMPTY_INTERACTOR;
 	}
-
+	
 	@Override
 	protected ClientView getFragmentView() {
 		return new ClientView(new ClientView.ViewListener() {
-						
+			
+			/**
+			 * Creates a new client request
+			 * @param ipAddress {@link String String} representing the IP address of the server
+			 * @param port {@link Integer int} representing the server port
+			 */
 			@Override
-			public void getRadio(String ipAddress, String port) {
-				client = new Client(ipAddress.trim(), Integer.parseInt(port.trim()), this);
-				client.execute(Request.GET_RADIO);
+			public void makeRequest(String ipAddress, int port, String requestName) {
+				client = new Client(ipAddress, port, this);
+				client.execute(requestName);
 			}
 			
 			@Override
@@ -40,27 +45,32 @@ public class ClientFragment extends BaseFragment<ClientView, BaseInteractor> {
 					if (!response.equals("CONNECTED")) {
 						fragmentView.updateMessageReceived(response);
 					} else {
-						fragmentView.enableRequestButtons();;
+						fragmentView.enableRequestButtons();
+						;
 					}
 				}
 			}
 			
 			@Override
+			public void getRadio(String ipAddress, String port) {
+				makeRequest(ipAddress.trim(), Integer.parseInt(port.trim()), Request.GET_RADIO);
+			}
+			
+			@Override
 			public void setRegisterOff(String ipAddress, String port) {
-				client = new Client(ipAddress.trim(), Integer.parseInt(port.trim()), this);
-				client.execute(Request.SET_REGISTER_OFF);
+				makeRequest(ipAddress.trim(), Integer.parseInt(port.trim()),
+							Request.SET_REGISTER_OFF);
 			}
 			
 			@Override
 			public void setRegisterOn(String ipAddress, String port) {
-				client = new Client(ipAddress.trim(), Integer.parseInt(port.trim()), this);
-				client.execute(Request.SET_REGISTER_ON);
+				makeRequest(ipAddress.trim(), Integer.parseInt(port.trim()),
+							Request.SET_REGISTER_ON);
 			}
 			
 			@Override
 			public void connect(String ipAddress, String port) {
-				client = new Client(ipAddress.trim(), Integer.parseInt(port.trim()), this);
-				client.execute(Request.CONNECT);
+				makeRequest(ipAddress.trim(), Integer.parseInt(port.trim()), Request.CONNECT);
 			}
 			
 		});
