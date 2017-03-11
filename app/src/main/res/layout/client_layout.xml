@@ -61,7 +61,7 @@
 					android:id="@+id/client_set_register_off_button"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:text="@string/turn_off_network"
+					android:text="@string/set_register_off"
 					android:textColor="@android:color/white"
 					android:textStyle="bold" />
 				
@@ -69,7 +69,7 @@
 					android:id="@+id/client_set_register_on_button"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:text="@string/turn_on_network"
+					android:text="@string/set_register_on"
 					android:textColor="@android:color/white"
 					android:textStyle="bold" />
 			</LinearLayout>

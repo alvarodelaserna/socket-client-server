@@ -9,7 +9,7 @@
 	<string name="get_radio">Get radio</string>
 	<string name="clear">Clear</string>
 	<string name="empty_fields">There are empty fields</string>
-	<string name="turn_off_network">Turn off network</string>
-	<string name="turn_on_network">Turn on network</string>
+	<string name="set_register_off">Set register off</string>
+	<string name="set_register_on">Set register on</string>
 	<string name="connect">Connect</string>
 </resources>

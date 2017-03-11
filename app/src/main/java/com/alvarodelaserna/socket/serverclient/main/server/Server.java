@@ -53,15 +53,12 @@ public class Server {
 	
 	private class SocketServerThread extends Thread {
 		
-		int count = 0;
-		
 		@Override
 		public void run() {
 			try {
 				serverSocket = new ServerSocket(socketServerPORT);
 				while (true) {
 					Socket socket = serverSocket.accept();
-					count++;
 					parseSocket(socket);
 				}
 			} catch (IOException e) {
@@ -127,8 +124,9 @@ public class Server {
 		}
 		
 		private void getRadio(Socket socket) {
-			GetRadioThread getRadioThread = new GetRadioThread(socket, count);
-			getRadioThread.run();
+			String radioAsString = getRadioAsString();
+			SendRadioToClientThread sendRadioToClientThread = new SendRadioToClientThread(socket, radioAsString);
+			sendRadioToClientThread.run();
 		}
 		
 	}
@@ -138,52 +136,25 @@ public class Server {
 		sendResultThread.run();
 	}
 	
-	private class GetRadioThread extends Thread {
+	private class SendRadioToClientThread extends Thread {
 		
 		private Socket hostThreadSocket;
-		int cnt;
+		private String radioData;
 		
-		GetRadioThread(Socket socket, int c) {
+		SendRadioToClientThread(Socket socket, String radioAsString) {
 			hostThreadSocket = socket;
-			cnt = c;
+			radioData = radioAsString;
 		}
 		
 		@Override
 		public void run() {
 			OutputStream outputStream;
-			JSONObject responseBody = new JSONObject();
-			try {
-				JSONObject cellInfo = Connectivity.getCellInfo(context);
-				responseBody.put("cellInfo", cellInfo);
-				JSONObject networkInfoObj = new JSONObject();
-				try {
-					NetworkInfo networkInfo = Connectivity.getNetworkInfo(context);
-					networkInfoObj.put("connectionType", networkInfo.getTypeName());
-					networkInfoObj.put("status", networkInfo.getState());
-					networkInfoObj.put("GSM", Connectivity.getGsmInfoObj(context));
-					JSONObject wifiInfoObj = new JSONObject();
-					wifiInfoObj.put("netName", networkInfo.getExtraInfo()
-						.replace("\"", ""));
-					wifiInfoObj.put("connectionSpeed", Connectivity.getConnectionSpeed(context));
-					wifiInfoObj.put("isConnectedOrConnecting",
-									   networkInfo.isConnectedOrConnecting());
-					networkInfoObj.put("WiFi", wifiInfoObj);
-					networkInfoObj.put("isRoaming", networkInfo.isRoaming());
-					networkInfoObj.put("isAvailable", networkInfo.isAvailable());
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-				responseBody.put("networkInfo", networkInfoObj);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			String msgReply = responseBody.toString();
 			try {
 				outputStream = hostThreadSocket.getOutputStream();
 				PrintStream printStream = new PrintStream(outputStream);
-				printStream.print(msgReply);
+				printStream.print(radioData);
 				printStream.close();
-				message += "Sent: \n" + StringUtils.formatString(msgReply) + "\n";
+				message += "Sent: \n" + StringUtils.formatString(radioData) + "\n";
 				activity.runOnUiThread(new Runnable() {
 					
 					@Override
@@ -205,6 +176,36 @@ public class Server {
 			});
 		}
 		
+	}
+	
+	private String getRadioAsString() {
+		JSONObject responseBody = new JSONObject();
+		try {
+			JSONObject cellInfo = Connectivity.getCellInfo(context);
+			responseBody.put("cellInfo", cellInfo);
+			JSONObject networkInfoObj = new JSONObject();
+			try {
+				NetworkInfo networkInfo = Connectivity.getNetworkInfo(context);
+				networkInfoObj.put("connectionType", networkInfo.getTypeName());
+				networkInfoObj.put("status", networkInfo.getState());
+				networkInfoObj.put("GSM", Connectivity.getGsmInfoObj(context));
+				JSONObject wifiInfoObj = new JSONObject();
+				wifiInfoObj.put("netName", networkInfo.getExtraInfo()
+					.replace("\"", ""));
+				wifiInfoObj.put("connectionSpeed", Connectivity.getConnectionSpeed(context));
+				wifiInfoObj.put("isConnectedOrConnecting",
+								   networkInfo.isConnectedOrConnecting());
+				networkInfoObj.put("WiFi", wifiInfoObj);
+				networkInfoObj.put("isRoaming", networkInfo.isRoaming());
+				networkInfoObj.put("isAvailable", networkInfo.isAvailable());
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			responseBody.put("networkInfo", networkInfoObj);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return responseBody.toString();
 	}
 	
 	private class SendResultThread extends Thread {

@@ -38,7 +38,6 @@ public class ClientFragment extends BaseFragment<ClientView, BaseInteractor> {
 			public void onResponseReceived(String response) {
 				if (fragmentView != null) {
 					if (!response.equals("CONNECTED")) {
-						fragmentView.disableInputs();
 						fragmentView.updateMessageReceived(response);
 					} else {
 						fragmentView.enableRequestButtons();;

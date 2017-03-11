@@ -134,11 +134,12 @@ public class ClientView extends BaseFragmentView {
 	}
 	
 	void enableRequestButtons() {
+		disableInputs();
 		connectButton.setVisibility(View.GONE);
 		requestButtonsContainer.setVisibility(View.VISIBLE);
 	}
 	
-	public void disableInputs() {
+	private void disableInputs() {
 		ipAddressEditText.setEnabled(false);
 		portEditText.setEnabled(false);
 	}
