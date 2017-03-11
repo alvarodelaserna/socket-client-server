@@ -47,6 +47,7 @@ dependencies {
 	compile "com.android.support:appcompat-v7:${supportVersion}",
 		"com.android.support:design:${supportVersion}",
 		"com.android.support:recyclerview-v7:${supportVersion}"
+	compile 'com.wokdsem.kommander:kommander:0.10.1'
 	compile 'com.wokdsem.kinject:kinject:1.1.0'
 	compile 'com.github.esafirm.android-image-picker:imagepicker:1.2.5@aar'
 	compile 'com.github.rey5137:material:1.2.4'

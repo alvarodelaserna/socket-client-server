@@ -31,37 +31,52 @@
 			android:hint="@string/server_port_number" />
 		
 		<Button
-			android:id="@+id/client_get_radio_button"
+			android:id="@+id/client_connect_button"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="20dp"
-			android:text="@string/get_radio"
+			android:text="@string/connect"
 			android:textColor="@android:color/white"
 			android:textStyle="bold" />
 		
-		<Button
-			android:id="@+id/client_turn_off_network_button"
+		<LinearLayout
+			android:id="@+id/client_request_buttons_container"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/turn_off_network"
-			android:textColor="@android:color/white"
-			android:textStyle="bold" />
-		
-		<Button
-			android:id="@+id/client_turn_on_network_button"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/turn_on_network"
-			android:textColor="@android:color/white"
-			android:textStyle="bold" />
+			android:layout_marginTop="10dp"
+			android:orientation="vertical"
+			android:visibility="gone">
+			<Button
+				android:id="@+id/client_get_radio_button"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/get_radio"
+				android:textColor="@android:color/white"
+				android:textStyle="bold" />
+			
+			<Button
+				android:id="@+id/client_turn_off_network_button"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/turn_off_network"
+				android:textColor="@android:color/white"
+				android:textStyle="bold" />
+			
+			<Button
+				android:id="@+id/client_turn_on_network_button"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/turn_on_network"
+				android:textColor="@android:color/white"
+				android:textStyle="bold" />
+		</LinearLayout>
 		
 		<Button
 			android:id="@+id/client_clear_button"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:backgroundTint="@color/colorAccent"
 			android:text="@string/clear"
 			android:textColor="@android:color/white"
-			android:backgroundTint="@color/colorAccent"
 			android:textStyle="bold" />
 		
 		<ScrollView

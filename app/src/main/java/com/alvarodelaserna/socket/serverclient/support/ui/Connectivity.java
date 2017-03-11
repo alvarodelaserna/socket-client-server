@@ -293,7 +293,6 @@ public class Connectivity {
 			super.onPostExecute(s);
 		}
 	}
-	// Converting InputStream to String
 	
 	private static String readStream(InputStream in) {
 		BufferedReader reader = null;

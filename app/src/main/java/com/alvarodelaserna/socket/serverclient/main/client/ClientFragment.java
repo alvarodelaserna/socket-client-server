@@ -3,6 +3,7 @@ package com.alvarodelaserna.socket.serverclient.main.client;
 import com.alvarodelaserna.socket.serverclient.support.base.BaseFragment;
 import com.alvarodelaserna.socket.serverclient.support.base.BaseInteractor;
 import com.alvarodelaserna.socket.serverclient.support.ui.Request;
+import com.wokdsem.kommander.Response;
 
 public class ClientFragment extends BaseFragment<ClientView, BaseInteractor> {
 	
@@ -37,7 +38,11 @@ public class ClientFragment extends BaseFragment<ClientView, BaseInteractor> {
 			@Override
 			public void onResponseReceived(String response) {
 				if (fragmentView != null) {
-					fragmentView.updateMessageReceived(response);
+					if (!response.equals("CONNECTED")) {
+						fragmentView.updateMessageReceived(response);
+					} else {
+						fragmentView.enableRequestButtons();;
+					}
 				}
 			}
 			
@@ -51,6 +56,12 @@ public class ClientFragment extends BaseFragment<ClientView, BaseInteractor> {
 			public void turnOnNetwork(String ipAddress, String port) {
 				client = new Client(ipAddress.trim(), Integer.parseInt(port.trim()), this);
 				client.execute(Request.TURN_ON_NETWORK);
+			}
+			
+			@Override
+			public void connect(String ipAddress, String port) {
+				client = new Client(ipAddress.trim(), Integer.parseInt(port.trim()), this);
+				client.execute(Request.MAKE_CONNECTION);
 			}
 		});
 	}

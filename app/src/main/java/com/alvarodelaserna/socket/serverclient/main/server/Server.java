@@ -92,6 +92,9 @@ public class Server {
 			if (to != null) {
 				message += "Request: " + to.value + "\n";
 				switch (to.value) {
+					case Request.GET_RADIO:
+						getRadio(socket);
+						break;
 					case Request.TURN_ON_NETWORK:
 						setRegisterOn(socket);
 						break;
@@ -99,9 +102,15 @@ public class Server {
 						setRegisterOff(socket);
 						break;
 					default:
-						getRadio(socket);
+						connect(socket);
 						break;
 				}
+			}
+		}
+		
+		private void connect(Socket socket) {
+			if (listener != null) {
+				listener.connect(socket);
 			}
 		}
 		

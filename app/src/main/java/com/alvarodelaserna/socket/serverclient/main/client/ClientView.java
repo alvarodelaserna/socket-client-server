@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.alvarodelaserna.socket.serverclient.R;
 import com.alvarodelaserna.socket.serverclient.support.ui.KeyBoardHelper;
@@ -23,6 +24,8 @@ public class ClientView extends BaseFragmentView {
 	
 	private String ipAddress, port;
 	private View mainView;
+	private LinearLayout requestButtonsContainer;
+	private Button connectButton;
 	
 	ClientView(ViewListener viewListener) {
 		super(R.layout.client_layout);
@@ -34,6 +37,21 @@ public class ClientView extends BaseFragmentView {
 		mainView = view;
 		Toolbar toolbar = (Toolbar) view.findViewById(R.id.client_toolbar);
 		viewContextInject(ViewNavigator.class).setUpNavigation(toolbar);
+		connectButton = (Button) view.findViewById(R.id.client_connect_button);
+		connectButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (StringUtils.isNullOrEmpty(ipAddress) || StringUtils.isNullOrEmpty(port)) {
+					ToastUtils.showShort(viewContextInject(Context.class),
+										 viewContextInject(Context.class).getString(
+											 R.string.empty_fields));
+				} else {
+					hideKeyboard();
+					viewListener.connect(ipAddress, port);
+				}
+			}
+		});
+		requestButtonsContainer = (LinearLayout) view.findViewById(R.id.client_request_buttons_container);
 		Button getRadioButton = (Button) view.findViewById(R.id.client_get_radio_button);
 		getRadioButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -114,7 +132,12 @@ public class ClientView extends BaseFragmentView {
 		receivedMessage.setText("");
 	}
 	
-	interface ViewListener {
+	void enableRequestButtons() {
+		connectButton.setVisibility(View.GONE);
+		requestButtonsContainer.setVisibility(View.VISIBLE);
+	}
+	
+	public interface ViewListener {
 		
 		void clearScreen();
 		
@@ -125,6 +148,8 @@ public class ClientView extends BaseFragmentView {
 		void turnOffNetwork(String ipAddress, String port);
 		
 		void turnOnNetwork(String ipAddress, String port);
+		
+		void connect(String ipAddress, String port);
 	}
 	
 }

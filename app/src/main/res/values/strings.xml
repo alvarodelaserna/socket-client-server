@@ -11,4 +11,5 @@
 	<string name="empty_fields">There are empty fields</string>
 	<string name="turn_off_network">Turn off network</string>
 	<string name="turn_on_network">Turn on network</string>
+	<string name="connect">Connect</string>
 </resources>

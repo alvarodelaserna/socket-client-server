@@ -52,9 +52,20 @@ public class ServerFragment extends BaseFragment<ServerView, BaseInteractor> {
 			public void setRegisterOn(Socket socket) {
 				switchNetworkState(socket, true);
 			}
+			
+			@Override
+			public void connect(Socket socket) {
+				makeConnection(socket);
+			}
 		});
 		if (fragmentView != null) {
 			fragmentView.updateIpAddress(server.getIpAddress() + ":" + server.getPort());
+		}
+	}
+	
+	private void makeConnection(Socket socket) {
+		if (server != null) {
+			server.sendResponse(socket, "CONNECTED");
 		}
 	}
 	
@@ -77,7 +88,7 @@ public class ServerFragment extends BaseFragment<ServerView, BaseInteractor> {
 		server.onDestroy();
 	}
 	
-	interface Listener {
+	public interface Listener {
 		
 		void onMessageSent(String message);
 		
@@ -86,5 +97,7 @@ public class ServerFragment extends BaseFragment<ServerView, BaseInteractor> {
 		void setRegisterOff(Socket socket);
 		
 		void setRegisterOn(Socket socket);
+		
+		void connect(Socket socket);
 	}
 }
