@@ -3,7 +3,6 @@ package com.alvarodelaserna.socket.serverclient.support.ui;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.telephony.CellIdentityCdma;
 import android.telephony.CellIdentityGsm;
@@ -19,17 +18,10 @@ import android.telephony.CellSignalStrengthCdma;
 import android.telephony.CellSignalStrengthGsm;
 import android.telephony.CellSignalStrengthLte;
 import android.telephony.CellSignalStrengthWcdma;
-import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -252,6 +244,7 @@ public class Connectivity {
 		CellSignalStrengthCdma cellSignalStrengthCdma = null;
 		CellSignalStrengthWcdma cellSignalStrengthWcdma = null;
 		if (!all.isEmpty()) {
+			CellInfo cellInfo = all.get(0);
 			for (int i = 0; i < all.size(); i++) {
 				try {
 					CellInfoGsm cellinfogsm = (CellInfoGsm) all.get(i);
@@ -286,7 +279,8 @@ public class Connectivity {
 						cellInfoObj.put("mcc", cellIdentityGsm.getMcc());
 						cellInfoObj.put("mnc", cellIdentityGsm.getMnc());
 						if (cellSignalStrengthGsm != null) {
-							cellInfoObj.put("strength", cellSignalStrengthGsm.getDbm());
+							String signalStrength = String.valueOf(cellSignalStrengthGsm.getDbm()) + "dB";
+							cellInfoObj.put("strength", signalStrength);
 						}
 						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 							cellInfoObj.put("arfcn", cellIdentityGsm.getArfcn());
@@ -304,7 +298,8 @@ public class Connectivity {
 						cellInfoObj.put("pci", cellIdentityLte.getPci());
 						cellInfoObj.put("tac", cellIdentityLte.getTac());
 						if (cellSignalStrengthLte != null) {
-							cellInfoObj.put("strength", cellSignalStrengthLte.getDbm());
+							String signalStrength = String.valueOf(cellSignalStrengthLte.getDbm()) + "dB";
+							cellInfoObj.put("strength", signalStrength);
 						}
 						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 							cellInfoObj.put("earfcn", cellIdentityLte.getEarfcn());
@@ -321,7 +316,8 @@ public class Connectivity {
 						cellInfoObj.put("latitude", cellIdentityCdma.getLatitude());
 						cellInfoObj.put("longitude", cellIdentityCdma.getLongitude());
 						if (cellSignalStrengthCdma != null) {
-							cellInfoObj.put("strength", cellSignalStrengthCdma.getDbm());
+							String signalStrength = String.valueOf(cellSignalStrengthCdma.getDbm()) + "dB";
+							cellInfoObj.put("strength", signalStrength);
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -335,7 +331,8 @@ public class Connectivity {
 						cellInfoObj.put("lac", cellIdentityWcdma.getLac());
 						cellInfoObj.put("psc", cellIdentityWcdma.getPsc());
 						if (cellSignalStrengthWcdma != null) {
-							cellInfoObj.put("strength", cellSignalStrengthWcdma.getDbm());
+							String signalStrength = String.valueOf(cellSignalStrengthWcdma.getDbm()) + "dB";
+							cellInfoObj.put("strength", signalStrength);
 						}
 						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 							cellInfoObj.put("uarfcn", cellIdentityWcdma.getUarfcn());

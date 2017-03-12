@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -42,9 +43,11 @@ public class ClientView extends BaseFragmentView {
 			@Override
 			public void onClick(View v) {
 				if (StringUtils.isNullOrEmpty(ipAddress) || StringUtils.isNullOrEmpty(port)) {
-					ToastUtils.showShort(viewContextInject(Context.class),
-										 viewContextInject(Context.class).getString(
-											 R.string.empty_fields));
+					showError(viewContextInject(Context.class).getString(
+						R.string.empty_fields));
+				} else if (!Patterns.IP_ADDRESS.matcher(ipAddress.trim())
+					.matches()) {
+					showError(viewContextInject(Context.class).getString(R.string.invalid_ip));
 				} else {
 					hideKeyboard();
 					viewListener.connect(ipAddress, port);
@@ -58,9 +61,8 @@ public class ClientView extends BaseFragmentView {
 			@Override
 			public void onClick(View v) {
 				if (StringUtils.isNullOrEmpty(ipAddress) || StringUtils.isNullOrEmpty(port)) {
-					ToastUtils.showShort(viewContextInject(Context.class),
-										 viewContextInject(Context.class).getString(
-											 R.string.empty_fields));
+					showError(viewContextInject(Context.class).getString(
+						R.string.empty_fields));
 				} else {
 					hideKeyboard();
 					viewListener.getRadio(ipAddress, port);
@@ -73,9 +75,8 @@ public class ClientView extends BaseFragmentView {
 			@Override
 			public void onClick(View v) {
 				if (StringUtils.isNullOrEmpty(ipAddress) || StringUtils.isNullOrEmpty(port)) {
-					ToastUtils.showShort(viewContextInject(Context.class),
-										 viewContextInject(Context.class).getString(
-											 R.string.empty_fields));
+					showError(viewContextInject(Context.class).getString(
+						R.string.empty_fields));
 				} else {
 					hideKeyboard();
 					viewListener.setRegisterOff(ipAddress, port);
@@ -87,9 +88,8 @@ public class ClientView extends BaseFragmentView {
 			@Override
 			public void onClick(View v) {
 				if (StringUtils.isNullOrEmpty(ipAddress) || StringUtils.isNullOrEmpty(port)) {
-					ToastUtils.showShort(viewContextInject(Context.class),
-										 viewContextInject(Context.class).getString(
-											 R.string.empty_fields));
+					showError(viewContextInject(Context.class).getString(
+						R.string.empty_fields));
 				} else {
 					hideKeyboard();
 					viewListener.setRegisterOn(ipAddress, port);
@@ -119,6 +119,10 @@ public class ClientView extends BaseFragmentView {
 			}
 		});
 		receivedMessage = (TextView) view.findViewById(R.id.client_response_text_view);
+	}
+	
+	private void showError(String string) {
+		ToastUtils.showShort(viewContextInject(Context.class), string);
 	}
 	
 	private void hideKeyboard() {

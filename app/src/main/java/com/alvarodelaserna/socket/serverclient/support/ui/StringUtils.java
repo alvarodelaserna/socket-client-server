@@ -1,16 +1,14 @@
 package com.alvarodelaserna.socket.serverclient.support.ui;
 
 public class StringUtils {
-
+	
 	public static boolean isNullOrEmpty(String str) {
 		return (str == null || str.isEmpty());
 	}
 	
-	public static String formatString(String text){
-		
+	public static String formatString(String text) {
 		StringBuilder json = new StringBuilder();
 		String indentString = "";
-		
 		for (int i = 0; i < text.length(); i++) {
 			char letter = text.charAt(i);
 			switch (letter) {
@@ -28,14 +26,12 @@ public class StringUtils {
 				case ',':
 					json.append(letter + "\n" + indentString);
 					break;
-				
 				default:
 					json.append(letter);
 					break;
 			}
 		}
-		
 		return json.toString();
 	}
-
+	
 }

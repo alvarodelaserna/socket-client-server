@@ -38,10 +38,10 @@ class Client  extends AsyncTask<String, Void, Void> {
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
-			response = "UnknownHostException: " + e.toString();
+			response = "Error: " + e.getMessage();
 		} catch (IOException e) {
 			e.printStackTrace();
-			response = "IOException: " + e.toString();
+			response = "Error: " + e.getMessage();
 		} finally {
 			if (socket != null) {
 				try {

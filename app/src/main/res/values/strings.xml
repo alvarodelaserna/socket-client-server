@@ -12,4 +12,5 @@
 	<string name="set_register_off">Set register off</string>
 	<string name="set_register_on">Set register on</string>
 	<string name="connect">Connect</string>
+	<string name="invalid_ip">IP address is invalid</string>
 </resources>
