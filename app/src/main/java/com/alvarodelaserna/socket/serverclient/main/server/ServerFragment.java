@@ -4,6 +4,7 @@ import android.content.Context;
 import com.alvarodelaserna.socket.serverclient.support.base.BaseFragment;
 import com.alvarodelaserna.socket.serverclient.support.base.BaseInteractor;
 import com.alvarodelaserna.socket.serverclient.support.ui.Connectivity;
+import com.wokdsem.kommander.Response;
 import java.net.Socket;
 
 public class ServerFragment extends BaseFragment<ServerView, BaseInteractor> {
@@ -21,7 +22,15 @@ public class ServerFragment extends BaseFragment<ServerView, BaseInteractor> {
 	
 	@Override
 	protected ServerView getFragmentView() {
-		return new ServerView();
+		return new ServerView(new ServerView.ViewListener() {
+			@Override
+			public void onGetRadio() {
+				if (server != null && fragmentView != null) {
+					String radioData = server.getRadio();
+					fragmentView.paintGetRadio(radioData);
+				}
+			}
+		});
 	}
 	
 	@Override

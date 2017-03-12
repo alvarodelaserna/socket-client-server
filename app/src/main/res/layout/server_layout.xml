@@ -19,6 +19,14 @@
 		android:orientation="vertical"
 		android:padding="10dp">
 		
+		<Button
+			android:id="@+id/server_get_radio_button"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/get_radio"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"/>
+		
 		<TextView
 			android:id="@+id/server_ip_address"
 			android:layout_width="match_parent"

@@ -54,6 +54,10 @@ public class Server {
 		}
 	}
 	
+	public String getRadio() {
+		return getRadioAsString();
+	}
+	
 	/**
 	 * This class opens a background thread to initialize the socket and parse its contents,
 	 * sending the appropriate response to the client afterwards
