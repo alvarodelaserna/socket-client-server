@@ -12,19 +12,19 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * This class implements all the functionality of the client
+ * This class implements all the functionality of the client.
  */
 class Client  extends AsyncTask<String, Void, Void> {
 	
-	private String dstAddress;
-	private int dstPort;
+	private String serverIpAddress;
+	private int serverPort;
 	private String response = "";
-	private ClientView.ViewListener listener;
+	private ClientView.ViewListener viewListener;
 	
-	Client(String addr, int port, ClientView.ViewListener listener) {
-		dstAddress = addr;
-		dstPort = port;
-		this.listener = listener;
+	Client(String addr, int port, ClientView.ViewListener viewListener) {
+		serverIpAddress = addr;
+		serverPort = port;
+		this.viewListener = viewListener;
 	}
 	
 	@Override
@@ -33,7 +33,7 @@ class Client  extends AsyncTask<String, Void, Void> {
 		Socket socket = null;
 		
 		try {
-			socket = new Socket(dstAddress, dstPort);
+			socket = new Socket(serverIpAddress, serverPort);
 			makeRequest(socket, arg0[0]);
 			
 		} catch (UnknownHostException e) {
@@ -79,6 +79,6 @@ class Client  extends AsyncTask<String, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		listener.onResponseReceived(StringUtils.formatString(response));
+		viewListener.onResponseReceived(StringUtils.formatString(response));
 	}
 }

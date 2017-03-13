@@ -164,6 +164,10 @@ public class Server {
 		sendResultThread.run();
 	}
 	
+	/**
+	 * This class starts a background thread to send the radio data to the client and displays the
+	 * information on the screen
+	 */
 	private class SendRadioDataToClientThread extends Thread {
 		
 		private Socket hostThreadSocket;
@@ -207,10 +211,11 @@ public class Server {
 	}
 	
 	/**
-	 * Gets radio data as a JSON object and
+	 * Gets radio data as a JSON object String
 	 * @return a stringified representation of said object
 	 */
 	private String getRadioAsString() {
+		JSONObject responseObj = new JSONObject();
 		JSONObject responseBody = new JSONObject();
 		try {
 			JSONObject cellInfo = Connectivity.getCellInfo(context);
@@ -232,14 +237,15 @@ public class Server {
 				ex.printStackTrace();
 			}
 			responseBody.put("networkInfo", networkInfoObj);
+			responseObj.put("radio", responseBody);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return responseBody.toString();
+		return responseObj.toString();
 	}
 	
 	/**
-	 * This class opens a background thread to send a response to the client and displays the
+	 * This class starts a background thread to send a response to the client and displays the
 	 * information on the screen
 	 */
 	private class SendResultThread extends Thread {
@@ -286,6 +292,10 @@ public class Server {
 		
 	}
 	
+	/**
+	 * Retrieves IP address
+	 * @return device IP address as {@link String String}
+	 */
 	String getIpAddress() {
 		String ip = "";
 		try {

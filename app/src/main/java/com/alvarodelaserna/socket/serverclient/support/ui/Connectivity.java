@@ -33,7 +33,9 @@ public class Connectivity {
 	/**
 	 * Get the network info
 	 *
-	 * @return {@link NetworkInfo NetworkInfo} object
+	 * @return {@link NetworkInfo NetworkInfo} object containing information about the current
+	 * active network
+	 *
 	 * @see ConnectivityManager#getActiveNetworkInfo()
 	 */
 	public static NetworkInfo getNetworkInfo(Context context) {
@@ -43,7 +45,9 @@ public class Connectivity {
 	}
 	
 	/**
-	 * Get connection speed as String
+	 * Get connection speed
+	 *
+	 * @return {@link String String} representing the approximate coonection speed of the device
 	 *
 	 * @see TelephonyManager#getNetworkType()
 	 */
@@ -90,6 +94,7 @@ public class Connectivity {
 	
 	/**
 	 * Get GSM network info
+	 *
 	 * @return {@link JSONObject JSON} object containing the data
 	 *
 	 * @see TelephonyManager#getNetworkType()
@@ -187,11 +192,11 @@ public class Connectivity {
 	
 	/**
 	 * Get current cell information
+	 *
 	 * @return {@link JSONObject JSON} object containing the data
 	 *
 	 * @see TelephonyManager#getCellLocation()
 	 * @see TelephonyManager#getAllCellInfo()
-	 *
 	 * @see CellInfoGsm#getCellIdentity()
 	 * @see CellInfoLte#getCellIdentity()
 	 * @see CellInfoCdma#getCellIdentity()
@@ -200,27 +205,23 @@ public class Connectivity {
 	 * @see CellInfoLte#getCellSignalStrength()
 	 * @see CellInfoCdma#getCellSignalStrength()
 	 * @see CellInfoWcdma#getCellSignalStrength()
-	 *
 	 * @see CellIdentityGsm#getCid()
 	 * @see CellIdentityGsm#getArfcn()
 	 * @see CellIdentityGsm#getBsic()
 	 * @see CellIdentityGsm#getLac()
 	 * @see CellIdentityGsm#getMcc()
 	 * @see CellIdentityGsm#getMnc()
-	 *
 	 * @see CellIdentityLte#getCi()
 	 * @see CellIdentityLte#getMnc()
 	 * @see CellIdentityLte#getMcc()
 	 * @see CellIdentityLte#getEarfcn()
 	 * @see CellIdentityLte#getPci()
 	 * @see CellIdentityLte#getTac()
-	 *
 	 * @see CellIdentityCdma#getSystemId()
 	 * @see CellIdentityCdma#getLatitude()
 	 * @see CellIdentityCdma#getBasestationId()
 	 * @see CellIdentityCdma#getLongitude()
 	 * @see CellIdentityCdma#getNetworkId()
-	 *
 	 * @see CellIdentityWcdma#getCid()
 	 * @see CellIdentityWcdma#getMcc()
 	 * @see CellIdentityWcdma#getLac()
@@ -244,7 +245,6 @@ public class Connectivity {
 		CellSignalStrengthCdma cellSignalStrengthCdma = null;
 		CellSignalStrengthWcdma cellSignalStrengthWcdma = null;
 		if (!all.isEmpty()) {
-			CellInfo cellInfo = all.get(0);
 			for (int i = 0; i < all.size(); i++) {
 				try {
 					CellInfoGsm cellinfogsm = (CellInfoGsm) all.get(i);
@@ -368,11 +368,11 @@ public class Connectivity {
 	 * @see Method#setAccessible(boolean)
 	 * @see Method#invoke(Object, Object...)
 	 *
-	 * @throws ClassNotFoundException
-	 * @throws NoSuchFieldException
-	 * @throws IllegalAccessException
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
+	 * @throws ClassNotFoundException if any of the underlying methods throw this exception
+	 * @throws NoSuchFieldException if any of the underlying methods throw this exception
+	 * @throws IllegalAccessException if any of the underlying methods throw this exception
+	 * @throws NoSuchMethodException if any of the underlying methods throw this exception
+	 * @throws InvocationTargetException if any of the underlying methods throw this exception
 	 */
 	public static void setMobileDataEnabled(Context context, boolean enabled)
 		throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException,
