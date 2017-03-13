@@ -220,16 +220,14 @@ public class Server {
 				NetworkInfo networkInfo = Connectivity.getNetworkInfo(context);
 				networkInfoObj.put("connectionType", networkInfo.getTypeName());
 				networkInfoObj.put("status", networkInfo.getState());
-				networkInfoObj.put("GSM", Connectivity.getGsmInfoObj(context));
-				JSONObject wifiInfoObj = new JSONObject();
-				wifiInfoObj.put("netName", networkInfo.getExtraInfo()
+				networkInfoObj.put("netName", networkInfo.getExtraInfo()
 					.replace("\"", ""));
-				wifiInfoObj.put("connectionSpeed", Connectivity.getConnectionSpeed(context));
-				wifiInfoObj.put("isConnectedOrConnecting",
+				networkInfoObj.put("connectionSpeed", Connectivity.getConnectionSpeed(context));
+				networkInfoObj.put("isConnectedOrConnecting",
 								   networkInfo.isConnectedOrConnecting());
-				networkInfoObj.put("WiFi", wifiInfoObj);
 				networkInfoObj.put("isRoaming", networkInfo.isRoaming());
 				networkInfoObj.put("isAvailable", networkInfo.isAvailable());
+				networkInfoObj.put("GSM", Connectivity.getGsmInfoObj(context));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
